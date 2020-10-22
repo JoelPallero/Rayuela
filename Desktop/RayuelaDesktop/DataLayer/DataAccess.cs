@@ -13,7 +13,7 @@ namespace DataLayer
         public SqlConnection conexion;
         public string CadenaDeConexion = @"Integrated Security=SSPI;
                                            Persist Security Info=False;
-                                           Initial Catalog=Rayuela;
+                                           Initial Catalog=AdministradorPersonal;
                                            Data Source=DESKTOP-S279OM7\SQLEXPRESS"
         ;
 

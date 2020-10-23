@@ -2,6 +2,7 @@
 using EntityLayer;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,9 @@ namespace Rayuela
     {
         #region Instancias
         private Paciente _paciente = new Paciente();
+        private Terapeuta _terapeuta = new Terapeuta();
         private BusPaciente _busPaciente = new BusPaciente();
+        private BusTerapeuta _busTerapeuta = new BusTerapeuta();
         #endregion
 
         #region Variables
@@ -30,5 +33,6 @@ namespace Rayuela
         {
 
         }
+
     }
 }

@@ -11,10 +11,9 @@ namespace DataLayer
     public class DataAccess
     {
         public SqlConnection conexion;
-        public string CadenaDeConexion = @"Integrated Security=SSPI;
-                                           Persist Security Info=False;
-                                           Initial Catalog=AdministradorPersonal;
-                                           Data Source=DESKTOP-S279OM7\SQLEXPRESS"
+        public string CadenaDeConexion = @"Data Source=(LocalDB)\MSSQLLocalDB;
+                                         AttachDbFilename=""F:\Programación 2020\GitHub\Rayuela\Desktop\RayuelaDesktop\SampleDatabaseWalkthrough\SampleDatabase.mdf"";
+                                         Integrated Security=True"
         ;
 
         public DataAccess()

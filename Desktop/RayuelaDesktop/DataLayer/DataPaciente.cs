@@ -10,7 +10,7 @@ namespace DataLayer
 {
     public class DataPaciente : DataAccess
     {
-        public int SavePaciente(Paciente _paciente)
+        public int NuevoPaciente(Paciente _paciente)
         {
             int resultado = -1;
             string query = @"Insert into Pacientes (Nombre,

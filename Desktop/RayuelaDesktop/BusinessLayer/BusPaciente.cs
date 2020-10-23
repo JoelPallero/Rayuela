@@ -18,7 +18,7 @@ namespace BusinessLayer
 
         public int SavePaciente(Paciente _paciente)
         {
-            return _dataPaciente.SavePaciente(_paciente);
+            return _dataPaciente.NuevoPaciente(_paciente);
         }
 
         public Paciente ConsutlarIdPaciente(Paciente _paciente)

@@ -13,8 +13,7 @@ namespace DataLayer
         public int NuevoPaciente(Paciente _paciente)
         {
             int resultado = -1;
-            string query = @"Insert into Pacientes (Nombre,
-                                                    Apellido,
+            string query = @"Insert into Pacientes (NombreApellido,
                                                     TipoDocumento,
                                                     NroDocumento,
                                                     ObraSocial,
@@ -22,8 +21,7 @@ namespace DataLayer
                                                     CertificadoDiscapacidad,
                                                     NroCarnetDiscapacidad,
                                                     Terapia) 
-                                             values(@Nombre,
-                                                    @Apellido,
+                                             values(@NombreApellido,
                                                     @TipoDocumento,
                                                     @NroDocumento,
                                                     @ObraSocial,
@@ -33,8 +31,7 @@ namespace DataLayer
                                                     @Terapia)"
             ;
 
-            SqlParameter nombre = new SqlParameter("@Nombre", _paciente.Nombre);
-            SqlParameter apellido = new SqlParameter("@Apellido", _paciente.Apellido);
+            SqlParameter nombreApellido = new SqlParameter("@NombreApellido", _paciente.NombreApellido);
             SqlParameter tipoDocumento = new SqlParameter("@TipoDocumento", _paciente.TipoDocumento);
             SqlParameter nroDocumento = new SqlParameter("@NroDocumento", _paciente.NroDocumento);
             SqlParameter obraSocial = new SqlParameter("@ObraSocial", _paciente.ObraSocial);
@@ -45,8 +42,7 @@ namespace DataLayer
 
             SqlCommand cmd = new SqlCommand(query, conexion);
 
-            cmd.Parameters.Add(nombre);
-            cmd.Parameters.Add(apellido);
+            cmd.Parameters.Add(nombreApellido);
             cmd.Parameters.Add(tipoDocumento);
             cmd.Parameters.Add(nroDocumento);
             cmd.Parameters.Add(obraSocial);

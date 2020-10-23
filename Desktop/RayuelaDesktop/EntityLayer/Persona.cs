@@ -9,14 +9,12 @@ namespace EntityLayer
     public class Persona
     {
         private int id;
-        private string nombre;
-        private string apellido;
+        private string nombreApellido;
         private string tipoDocumento;
         private int nroDocumento;
 
         public int Id { get => id; set => id = value; }
-        public string Nombre { get => nombre; set => nombre = value; }
-        public string Apellido { get => apellido; set => apellido = value; }
+        public string NombreApellido { get => nombreApellido; set => nombreApellido = value; }
         public string TipoDocumento { get => tipoDocumento; set => tipoDocumento = value; }
         public int NroDocumento { get => nroDocumento; set => nroDocumento = value; }
     }

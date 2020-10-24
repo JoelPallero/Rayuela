@@ -2,6 +2,7 @@
 using EntityLayer;
 using System;
 using System.Data;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace Rayuela
@@ -9,120 +10,194 @@ namespace Rayuela
     public partial class FormInicial : Form
     {
         #region Instancia de clases
+        private Turno _turno = new Turno();
         private Paciente _paciente = new Paciente();
         private Terapeuta _terapeuta = new Terapeuta();
+        private Horarios _horarios = new Horarios();
+        private BusTurno _busTurno = new BusTurno();
+        private BusHorarios _busHorarios = new BusHorarios();
         private BusPaciente _busPaciente = new BusPaciente();
         private BusTerapeuta _busTerapeuta = new BusTerapeuta();
-        private MetodosDeConsulta _metodosDeConsulta = new MetodosDeConsulta();
         #endregion
 
         public FormInicial()
         {
             InitializeComponent();
-            
+
         }
 
-        #region Metodos generales
+        #region Variables
 
-
+        string Fecha;
+        bool PacienteEncontrado;
+        int IdPaciente;
 
         #endregion
 
-        private void BtnSchedule_Click(object sender, EventArgs e)
+        #region Metodos generales
+
+        private void ClearPage()
         {
-            SavePaciente();
-            _metodosDeConsulta.ConsultarIdPaciente();
-            if (_metodosDeConsulta.IdPaciente != 0)
+            foreach (Control text in GpPaciente.Controls)
             {
-                _metodosDeConsulta.ConsultarIdTerapeuta(CmbTerapeuta.SelectedItem.ToString());
-                if (_metodosDeConsulta.IdTerapeuta != 0)
+                if (text is TextBox)
                 {
-                    GuardarTurno();
+                    text.Text = string.Empty;
                 }
             }
-            else
+        }
+
+        private void CheckEmptyTextBox()
+        {
+            foreach (Control text in GpPaciente.Controls)
             {
-                MessageBox.Show("No se encontró ningún paciente registrado", "Error en la carga de datos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (text is TextBox 
+                    && string.IsNullOrEmpty(text.Text) 
+                    || string.IsNullOrWhiteSpace(text.Text))
+                {
+                    MessageBox.Show("No puede haber campos vacíos", "Datos Incompletos", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                }
             }
         }
 
         private void SavePaciente()
         {
-            _paciente.Nombre = TxtNombrePaciente.Text;
-            _paciente.Apellido = TxtApellidoPaciente.Text;
-            _paciente.TipoDocumento = CmbTipoDocumento.SelectedItem.ToString();
-            _paciente.NroDocumento = Convert.ToInt32(TxtNroDocumento.Text);
-            _paciente.ObraSocial = TxtObraSocialPaciente.Text;
-            _paciente.NroAfiliado = Convert.ToInt32(TxtNroAfiliado.Text);
-            _paciente.CertificadoDiscapacidad = CmbDiscapacidad.SelectedItem.ToString();
-
-            if (CmbDiscapacidad.SelectedItem.ToString() == "Si")
+            if (PacienteEncontrado == false)
             {
-                _paciente.NroCarnetDiscapacidad = Convert.ToInt32(TxtCertificado.Text);
-            }
-            else
-            {
-                _paciente.NroCarnetDiscapacidad = 0;
-            }
-            _paciente.Terapia = TxtTerapiaPaciente.Text;
+                _paciente.NombreApellido = TxtNombrePaciente.Text;
+                _paciente.TipoDocumento = CmbTipoDocumento.SelectedItem.ToString();
+                _paciente.NroDocumento = TxtNroDocumento.Text;
+                _paciente.ObraSocial = TxtObraSocialPaciente.Text;
+                _paciente.NroAfiliado = TxtNroAfiliado.Text;
+                _paciente.CertificadoDiscapacidad = CmbDiscapacidad.SelectedItem.ToString();
 
-            _busPaciente.SavePaciente(_paciente);
+                if (CmbDiscapacidad.SelectedItem.ToString() == "Si")
+                {
+                    _paciente.NroCarnetDiscapacidad = TxtCertificado.Text;
+                }
+                else
+                {
+                    _paciente.NroCarnetDiscapacidad = "0";
+                }
+                _paciente.Terapia = TxtTerapiaPaciente.Text;
+
+                _busPaciente.SavePaciente(_paciente);
+            }
         }
 
         private void GuardarTurno()
         {
-            //asignar los ID de paciente y terapeuta
-            //guardar fecha y hora de turno
-            //confirmar turno
+            _turno.Dia = Fecha;
+
+            _turno.HoraInicio = CmbHorarios.SelectedIndex + 1;
+            _turno.HoraFin = CmbHorarios.SelectedIndex + 1;
+
+            _turno.TerapeutaId = CmbTerapeuta.SelectedIndex + 1;
+            _turno.PacienteId = IdPaciente;
+            _busTurno.CargarTurno(_turno);
         }
 
-        private void AgendaDeTurnos_DateSelected(object sender, DateRangeEventArgs e)
+        public void ConsultarIdPaciente()
         {
-            //verificar el día seleccionado
-            //consultar los terapeutas que trabajan ese dia
-            //Consultar los terapeutas que atienden dependiendo de la terapia necesaria para el paciente
-            //Consultar los horarios que no están agendados
-            //mostrar los datos de los horarios y terapeutas disponibles
+            _paciente = _busPaciente.ConsutlarIdPaciente(_paciente);
+            IdPaciente = _paciente.Id;
+        }
 
+        private void CargarhorariosDesocupados()
+        {
+            DataTable Dt1 = _busTurno.TraerHorariosDesocupados(Fecha);
+
+            CmbHorarios.DataSource = Dt1;
+            CmbHorarios.DisplayMember = "HoraInicio";
+        }
+
+        private void SaveTerapeuta()
+        {
+            _terapeuta.NombreApellido = TxtNomreTerapeuta.Text;
+            _terapeuta.TipoDocumento = CmbTipoDocumentoTerapeuta.SelectedItem.ToString();
+            _terapeuta.NroDocumento = TxtNroDocumentoTerapeuta.Text;
+            _terapeuta.Terapia = TxtTerapiaTerapeuta.Text;
+            _busTerapeuta.NuevoTerapeuta(_terapeuta);
+        }
+
+        private void CargarTerapeuta()
+        {
             DataTable dt = _busTerapeuta.TraerTerapeutas();
             CmbTerapeuta.DataSource = dt;
-            CmbTerapeuta.ValueMember = "Apellido";
-            CmbTerapeuta.DisplayMember = "Nombre";
-
-            //por ahora voy a traer a todos los terapeutas y voy a mostrar horarios cada 15 minutos 
-            //para reservar el turno para un paciente
+            CmbTerapeuta.ValueMember = "NombreApellido";
         }
+
+        private void CargarPaciente()
+        {
+            _busPaciente.BuscarPaciente(TxtNroDocumento.Text, _paciente);
+            if (_paciente.NroDocumento != "0")
+            {
+                TxtNombrePaciente.Text = _paciente.NombreApellido.ToString();
+                CmbTipoDocumento.Text = _paciente.TipoDocumento.ToString();
+                TxtNroDocumento.Text = _paciente.NroDocumento.ToString();
+                CmbDiscapacidad.Text = _paciente.CertificadoDiscapacidad.ToString();
+                TxtCertificado.Text = _paciente.NroCarnetDiscapacidad.ToString();
+                TxtObraSocialPaciente.Text = _paciente.ObraSocial.ToString();
+                TxtNroAfiliado.Text = _paciente.NroAfiliado.ToString();
+                TxtTerapiaPaciente.Text = _paciente.Terapia.ToString();
+                PacienteEncontrado = true;
+            }
+            else
+            {
+                PacienteEncontrado = false;
+            }
+        }
+        #endregion
+
+        private void BtnSchedule_Click(object sender, EventArgs e)
+        {
+            SavePaciente();
+            ConsultarIdPaciente();
+            GuardarTurno();
+            ClearPage();
+        }        
 
         private void TxtNroDocumento_KeyPress(object sender, KeyPressEventArgs e)
         {
             // traer los datos de un paciente que tenga el N° de documento en este textbox
             if (e.KeyChar == Convert.ToChar(Keys.Enter))
             {
-                //traer el paciente
+                if (TxtNroDocumento.Text != string.Empty)
+                {
+                    CargarPaciente();
+                }
             }
         }
 
         private void BtnCargarTerapeuta_Click(object sender, EventArgs e)
         {
-            CargarTerapeuta();
-        }
-
-        private void CargarTerapeuta()
-        {
-            _terapeuta.Nombre = TxtNomreTerapeuta.Text;
-            _terapeuta.Apellido = TxtApellidoTerapeuta.Text;
-            _terapeuta.TipoDocumento = CmbTipoDocumentoTerapeuta.SelectedItem.ToString();
-            _terapeuta.NroDocumento = Convert.ToInt32(TxtNroDocumentoTerapeuta.Text);
-            _terapeuta.Terapia = TxtTerapiaTerapeuta.Text;
-            _busTerapeuta.NuevoTerapeuta(_terapeuta);
-        }
+            SaveTerapeuta();
+            ClearPage();
+        }       
 
         private void TxtNroDocumentoTerapeuta_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == Convert.ToChar(Keys.Enter))
             {
-                //traer el terapeuta
+                CargarTerapeuta();
             }
         }
+
+        private void DtCalendario_ValueChanged(object sender, EventArgs e)
+        {
+            CargarTerapeuta();
+            Fecha = Convert.ToString(DtCalendario.Value.Day + "/"
+                                   + DtCalendario.Value.Month + "/"
+                                   + DtCalendario.Value.Year);
+            CargarhorariosDesocupados();
+        }
+
+        private void TxtNroDocumento_Leave(object sender, EventArgs e)
+        {
+            if (TxtNroDocumento.Text != string.Empty)
+            {
+                CargarPaciente();
+            }
+        }        
     }
 }

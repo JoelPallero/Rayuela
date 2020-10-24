@@ -1,11 +1,7 @@
 ﻿using EntityLayer;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataLayer
 {
@@ -50,7 +46,7 @@ namespace DataLayer
 
         public DataTable TraerTerapeutas()
         {
-            string query = "SELECT Nombre, Apellido From Terapeutas";
+            string query = "SELECT NombreApellido From Terapeutas";
 
             SqlCommand cmd = new SqlCommand(query, conexion);
 

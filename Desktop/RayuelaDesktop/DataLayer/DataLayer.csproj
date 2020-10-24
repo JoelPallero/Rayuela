@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess.cs" />
+    <Compile Include="DataHorarios.cs" />
     <Compile Include="DataPaciente.cs" />
     <Compile Include="DataTerapeuta.cs" />
     <Compile Include="DataTurno.cs" />

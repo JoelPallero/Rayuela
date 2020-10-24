@@ -1,9 +1,4 @@
-﻿using System;
-using DataLayer;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataLayer;
 using EntityLayer;
 
 namespace BusinessLayer
@@ -25,5 +20,11 @@ namespace BusinessLayer
         {
             return _dataPaciente.ConsutlarIdPaciente(_paciente);
         }
+
+        public Paciente BuscarPaciente(string dni, Paciente _paciente)
+        {
+            return _dataPaciente.BuscarPaciente(dni, _paciente);
+        }
+
     }
 }

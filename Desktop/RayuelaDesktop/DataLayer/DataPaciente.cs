@@ -1,10 +1,6 @@
 ﻿using EntityLayer;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataLayer
 {
@@ -58,7 +54,6 @@ namespace DataLayer
             }
             catch (Exception e)
             {
-
                 throw new Exception("No se pudo guardar los datos del paciente", e);
             }
             finally
@@ -103,5 +98,52 @@ namespace DataLayer
 
             return _paciente;
         }
+
+        public Paciente BuscarPaciente(string dni, Paciente _paciente)
+        {
+            string query = @"select *
+                        from Pacientes
+                        where NroDocumento = '" + dni + "';"
+            ;
+
+            SqlCommand cmd = new SqlCommand(query, conexion);
+
+            try
+            {
+                Abrirconexion();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    _paciente.Id = int.Parse(reader["Id"].ToString());
+                    _paciente.NombreApellido = reader["NombreApellido"].ToString();
+                    _paciente.TipoDocumento = reader["TipoDocumento"].ToString();
+                    _paciente.NroDocumento = reader["NroDocumento"].ToString();
+                    _paciente.ObraSocial = reader["ObraSocial"].ToString();
+                    _paciente.NroAfiliado = reader["NroAfiliado"].ToString();
+                    _paciente.CertificadoDiscapacidad = reader["CertificadoDiscapacidad"].ToString();
+                    _paciente.NroCarnetDiscapacidad = reader["NroCarnetDiscapacidad"].ToString();
+                    _paciente.Terapia = reader["Terapia"].ToString();
+                }
+                else
+                {
+                    _paciente.NroDocumento = "0";
+                }
+                reader.Close();
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                Cerrarconexion();
+            }
+
+            return _paciente;
+        }
+
+
     }
 }

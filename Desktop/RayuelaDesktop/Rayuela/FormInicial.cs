@@ -55,7 +55,7 @@ namespace Rayuela
                     && string.IsNullOrEmpty(text.Text) 
                     || string.IsNullOrWhiteSpace(text.Text))
                 {
-                    MessageBox.Show("No puede haber campos vacíos", "Datos Incompletos", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    MessageBox.Show("No puede haber campos vacíos", "Datos Incompletos", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }

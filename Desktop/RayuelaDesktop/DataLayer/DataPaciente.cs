@@ -9,43 +9,43 @@ namespace DataLayer
         public int NuevoPaciente(Paciente _paciente)
         {
             int resultado = -1;
-            string query = @"Insert into Pacientes (NombreApellido,
-                                                    TipoDocumento,
-                                                    NroDocumento,
+            string query = @"Insert into Pacientes (Nombre,
+                                                    Apellido,
                                                     ObraSocial,
-                                                    NroAfiliado,
+                                                    Terapia,
+                                                    DNI,
                                                     CertificadoDiscapacidad,
-                                                    NroCarnetDiscapacidad,
-                                                    Terapia) 
-                                             values(@NombreApellido,
-                                                    @TipoDocumento,
-                                                    @NroDocumento,
+                                                    NroAfiliado,
+                                                    IdTerapeuta) 
+                                             values(@Nombre,
+                                                    @Apellido,
                                                     @ObraSocial,
-                                                    @NroAfiliado,
+                                                    @Terapia,
+                                                    @DNI,
                                                     @CertificadoDiscapacidad,
-                                                    @NroCarnetDiscapacidad,
-                                                    @Terapia)"
+                                                    @NroAfiliado,
+                                                    @IdTerapeuta)"
             ;
 
-            SqlParameter nombreApellido = new SqlParameter("@NombreApellido", _paciente.NombreApellido);
-            SqlParameter tipoDocumento = new SqlParameter("@TipoDocumento", _paciente.TipoDocumento);
-            SqlParameter nroDocumento = new SqlParameter("@NroDocumento", _paciente.NroDocumento);
+            SqlParameter nombre = new SqlParameter("@Nombre", _paciente.Nombre);
+            SqlParameter apellido = new SqlParameter("@Apellido", _paciente.Apellido);
             SqlParameter obraSocial = new SqlParameter("@ObraSocial", _paciente.ObraSocial);
-            SqlParameter nroAfiliado = new SqlParameter("@NroAfiliado", _paciente.NroAfiliado);
-            SqlParameter certificadoDiscapacidad = new SqlParameter("@CertificadoDiscapacidad", _paciente.CertificadoDiscapacidad);
-            SqlParameter nroCarnetDiscapacidad = new SqlParameter("@NroCarnetDiscapacidad", _paciente.NroCarnetDiscapacidad);
             SqlParameter terapia = new SqlParameter("@Terapia", _paciente.Terapia);
+            SqlParameter dNI = new SqlParameter("@DNI", _paciente.Dni);
+            SqlParameter certificadoDiscapacidad = new SqlParameter("@CertificadoDiscapacidad", _paciente.CertificadoDiscapacidad);
+            SqlParameter nroAfiliado = new SqlParameter("@NroAfiliado", _paciente.NroAfiliado);
+            SqlParameter idTerapeuta = new SqlParameter("@IdTerapeuta", _paciente.IdTerapeuta);
 
             SqlCommand cmd = new SqlCommand(query, conexion);
 
-            cmd.Parameters.Add(nombreApellido);
-            cmd.Parameters.Add(tipoDocumento);
-            cmd.Parameters.Add(nroDocumento);
+            cmd.Parameters.Add(nombre);
+            cmd.Parameters.Add(apellido);
             cmd.Parameters.Add(obraSocial);
-            cmd.Parameters.Add(nroAfiliado);
-            cmd.Parameters.Add(certificadoDiscapacidad);
-            cmd.Parameters.Add(nroCarnetDiscapacidad);
             cmd.Parameters.Add(terapia);
+            cmd.Parameters.Add(dNI);
+            cmd.Parameters.Add(certificadoDiscapacidad);
+            cmd.Parameters.Add(nroAfiliado);
+            cmd.Parameters.Add(idTerapeuta);
 
             try
             {
@@ -99,11 +99,13 @@ namespace DataLayer
             return _paciente;
         }
 
-        public Paciente BuscarPaciente(string dni, Paciente _paciente)
+        public Paciente BuscarPaciente(string dni)
         {
+            Paciente _paciente = new Paciente();
+
             string query = @"select *
                         from Pacientes
-                        where NroDocumento = '" + dni + "';"
+                        where DNI = '" + dni + "';"
             ;
 
             SqlCommand cmd = new SqlCommand(query, conexion);
@@ -115,18 +117,18 @@ namespace DataLayer
                 if (reader.Read())
                 {
                     _paciente.Id = int.Parse(reader["Id"].ToString());
-                    _paciente.NombreApellido = reader["NombreApellido"].ToString();
-                    _paciente.TipoDocumento = reader["TipoDocumento"].ToString();
-                    _paciente.NroDocumento = reader["NroDocumento"].ToString();
+                    _paciente.Apellido = reader["Apellido"].ToString();
+                    _paciente.Nombre = reader["Nombre"].ToString();
                     _paciente.ObraSocial = reader["ObraSocial"].ToString();
-                    _paciente.NroAfiliado = reader["NroAfiliado"].ToString();
-                    _paciente.CertificadoDiscapacidad = reader["CertificadoDiscapacidad"].ToString();
-                    _paciente.NroCarnetDiscapacidad = reader["NroCarnetDiscapacidad"].ToString();
                     _paciente.Terapia = reader["Terapia"].ToString();
+                    _paciente.Dni = int.Parse(reader["DNI"].ToString());
+                    _paciente.CertificadoDiscapacidad = reader["CertificadoDiscapacidad"].ToString();
+                    _paciente.NroAfiliado = int.Parse(reader["NroAfiliado"].ToString());
+
                 }
                 else
                 {
-                    _paciente.NroDocumento = "0";
+                    _paciente.Dni = 0;
                 }
                 reader.Close();
                 cmd.ExecuteNonQuery();

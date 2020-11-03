@@ -2,6 +2,7 @@
 using EntityLayer;
 using System;
 using System.Data;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 
@@ -23,14 +24,20 @@ namespace Rayuela
         public FormInicial()
         {
             InitializeComponent();
-
         }
 
         #region Variables
 
         string Fecha;
+        string Hora;
+        string Minutos;
+        int Terapeuta;
         bool PacienteEncontrado;
+        bool EmptyFields;
         int IdPaciente;
+        DateTime FechaTurno;
+        DateTime HoraInicio;
+        DateTime HoraFin;
 
         #endregion
 
@@ -38,7 +45,7 @@ namespace Rayuela
 
         private void ClearPage()
         {
-            foreach (Control text in GpPaciente.Controls)
+            foreach (Control text in AltaTerpeuta.Controls)
             {
                 if (text is TextBox)
                 {
@@ -49,49 +56,53 @@ namespace Rayuela
 
         private void CheckEmptyTextBox()
         {
-            foreach (Control text in GpPaciente.Controls)
+            foreach (Control text in GroupPaciente.Controls)
             {
-                if (text is TextBox 
-                    && string.IsNullOrEmpty(text.Text) 
-                    || string.IsNullOrWhiteSpace(text.Text))
+                if (text is TextBox)
                 {
-                    MessageBox.Show("No puede haber campos vacíos", "Datos Incompletos", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (string.IsNullOrEmpty(text.Text))
+                    {
+                        MessageBox.Show("No puede haber campos vacíos", "Datos Incompletos", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        EmptyFields = true;
+                    }
+                    else
+                    {
+                        EmptyFields = false;
+                    }
                 }
             }
+        }
+
+        private void SaveTerapeuta()
+        {
+            _terapeuta.NombreApellido = TxtNomreTerapeuta.Text;
+            _terapeuta.Contraseña = TxtClaveTerapeuta.Text;
+            _terapeuta.Terapia = TxtTerapiaTerapeuta.Text;
+            _busTerapeuta.NuevoTerapeuta(_terapeuta);
         }
 
         private void SavePaciente()
         {
             if (PacienteEncontrado == false)
             {
-                _paciente.NombreApellido = TxtNombrePaciente.Text;
-                _paciente.TipoDocumento = CmbTipoDocumento.SelectedItem.ToString();
-                _paciente.NroDocumento = TxtNroDocumento.Text;
+                _paciente.Apellido = TxtApellidoPaciente.Text;
+                _paciente.Nombre = TxtNombrePaciente.Text;
                 _paciente.ObraSocial = TxtObraSocialPaciente.Text;
-                _paciente.NroAfiliado = TxtNroAfiliado.Text;
-                _paciente.CertificadoDiscapacidad = CmbDiscapacidad.SelectedItem.ToString();
-
-                if (CmbDiscapacidad.SelectedItem.ToString() == "Si")
-                {
-                    _paciente.NroCarnetDiscapacidad = TxtCertificado.Text;
-                }
-                else
-                {
-                    _paciente.NroCarnetDiscapacidad = "0";
-                }
                 _paciente.Terapia = TxtTerapiaPaciente.Text;
+                _paciente.Dni = Convert.ToInt32(TxtNroDocumentoPaciente.Text);
+                _paciente.CertificadoDiscapacidad = TxtCertificadoDiscapacidad.Text;
+                _paciente.NroAfiliado = Convert.ToInt32(TxtNroAfiliado.Text);
+                _paciente.IdTerapeuta = Convert.ToInt32(CmbTerapeuta.SelectedIndex + 1);
 
                 _busPaciente.SavePaciente(_paciente);
             }
         }
 
         private void GuardarTurno()
-        {
-            _turno.Dia = Fecha;
-
-            _turno.HoraInicio = CmbHorarios.SelectedIndex + 1;
-            _turno.HoraFin = CmbHorarios.SelectedIndex + 1;
-
+        {            
+            _turno.Dia = FechaTurno;
+            _turno.HoraInicio = HoraInicio;
+            _turno.HoraFin = HoraFin;
             _turno.TerapeutaId = CmbTerapeuta.SelectedIndex + 1;
             _turno.PacienteId = IdPaciente;
             _busTurno.CargarTurno(_turno);
@@ -103,40 +114,22 @@ namespace Rayuela
             IdPaciente = _paciente.Id;
         }
 
-        private void CargarhorariosDesocupados()
-        {
-            DataTable Dt1 = _busTurno.TraerHorariosDesocupados(Fecha);
-
-            CmbHorarios.DataSource = Dt1;
-            CmbHorarios.DisplayMember = "HoraInicio";
-        }
-
-        private void SaveTerapeuta()
-        {
-            _terapeuta.NombreApellido = TxtNomreTerapeuta.Text;
-            _terapeuta.TipoDocumento = CmbTipoDocumentoTerapeuta.SelectedItem.ToString();
-            _terapeuta.NroDocumento = TxtNroDocumentoTerapeuta.Text;
-            _terapeuta.Terapia = TxtTerapiaTerapeuta.Text;
-            _busTerapeuta.NuevoTerapeuta(_terapeuta);
-        }
-
         private void CargarTerapeuta()
         {
             DataTable dt = _busTerapeuta.TraerTerapeutas();
             CmbTerapeuta.DataSource = dt;
-            CmbTerapeuta.ValueMember = "NombreApellido";
+            CmbTerapeuta.DisplayMember = "NombreApellido";
         }
 
         private void CargarPaciente()
         {
-            _busPaciente.BuscarPaciente(TxtNroDocumento.Text, _paciente);
-            if (_paciente.NroDocumento != "0")
+            _busPaciente.BuscarPaciente(TxtNroDocumentoPaciente.Text);
+            if (_paciente.Dni != 0)
             {
-                TxtNombrePaciente.Text = _paciente.NombreApellido.ToString();
-                CmbTipoDocumento.Text = _paciente.TipoDocumento.ToString();
-                TxtNroDocumento.Text = _paciente.NroDocumento.ToString();
-                CmbDiscapacidad.Text = _paciente.CertificadoDiscapacidad.ToString();
-                TxtCertificado.Text = _paciente.NroCarnetDiscapacidad.ToString();
+                TxtApellidoPaciente.Text = _paciente.Apellido.ToString();
+                TxtNombrePaciente.Text = _paciente.Nombre.ToString();
+                TxtNroDocumentoPaciente.Text = _paciente.Dni.ToString();
+                TxtCertificadoDiscapacidad.Text = _paciente.CertificadoDiscapacidad.ToString();
                 TxtObraSocialPaciente.Text = _paciente.ObraSocial.ToString();
                 TxtNroAfiliado.Text = _paciente.NroAfiliado.ToString();
                 TxtTerapiaPaciente.Text = _paciente.Terapia.ToString();
@@ -147,22 +140,48 @@ namespace Rayuela
                 PacienteEncontrado = false;
             }
         }
+
+        private void AsignarHorarios()
+        {
+            Hora = CmbHora.Text;
+            Minutos = CmbMinutos.Text;
+            string FechaActual = Fecha + " " + Hora + ":" + Minutos + ":00";
+
+            string HoraInicial = FechaActual;
+
+            DateTime.TryParse(FechaActual, out FechaTurno);
+            DateTime.TryParse(HoraInicial, out HoraInicio);
+
+            string HoraFinal = Convert.ToString(FechaTurno.AddMinutes(45));
+            DateTime.TryParse(HoraFinal, out HoraFin);
+        }
         #endregion
 
         private void BtnSchedule_Click(object sender, EventArgs e)
         {
+            AsignarHorarios();
             SavePaciente();
             ConsultarIdPaciente();
             GuardarTurno();
+
+            string _notifacion = "Tenés un nuevo paciente, el día: " + Fecha + ", a la hora: " +
+                                 Hora + ":" + Minutos + ".";
+
+            Notificacion("Se ha agendado un nuevo turno", _notifacion);
             ClearPage();
-        }        
+
+            //CheckEmptyTextBox();
+            //if (EmptyFields != false)
+            //{                
+            //}
+        }
 
         private void TxtNroDocumento_KeyPress(object sender, KeyPressEventArgs e)
         {
             // traer los datos de un paciente que tenga el N° de documento en este textbox
             if (e.KeyChar == Convert.ToChar(Keys.Enter))
             {
-                if (TxtNroDocumento.Text != string.Empty)
+                if (TxtNroDocumentoPaciente.Text != string.Empty)
                 {
                     CargarPaciente();
                 }
@@ -185,19 +204,48 @@ namespace Rayuela
 
         private void DtCalendario_ValueChanged(object sender, EventArgs e)
         {
-            CargarTerapeuta();
+            string FechaActual = DateTime.Now.ToShortDateString();
+            Fecha = DtCalendario.Value.ToShortDateString();
+
+            DateTime FA = Convert.ToDateTime(FechaActual);
+            DateTime Fa2 = Convert.ToDateTime(Fecha);
+
+            if (Fa2 < FA)
+            {
+                DtCalendario.Value = FA;
+                MessageBox.Show("No se puede seleccionar una fecha anterior a la actual", "Inconsistencias", MessageBoxButtons.OK);
+            }
+            else
+            {
+                CargarTerapeuta();
+                AsignarFecha();
+                Terapeuta = CmbTerapeuta.SelectedIndex + 1;
+                //CargarhorariosDesocupados();
+            }
+        }
+
+        private void AsignarFecha()
+        {
             Fecha = Convert.ToString(DtCalendario.Value.Day + "/"
                                    + DtCalendario.Value.Month + "/"
                                    + DtCalendario.Value.Year);
-            CargarhorariosDesocupados();
+            Terapeuta = CmbTerapeuta.SelectedIndex + 1;
         }
 
         private void TxtNroDocumento_Leave(object sender, EventArgs e)
         {
-            if (TxtNroDocumento.Text != string.Empty)
+            if (TxtNroDocumentoPaciente.Text != string.Empty)
             {
                 CargarPaciente();
             }
-        }        
+        }
+
+        private void Notificacion(string Titulo, string Body)
+        {
+            //NotifyIcon _notifyIcon = new NotifyIcon();
+            //_notifyIcon.Visible = true;
+            //_notifyIcon.ShowBalloonTip(6000);
+        }
+
     }
 }

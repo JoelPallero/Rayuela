@@ -45,6 +45,7 @@
     <Compile Include="DataHorarios.cs" />
     <Compile Include="DataPaciente.cs" />
     <Compile Include="DataTerapeuta.cs" />
+    <Compile Include="DataTipoMovimiento.cs" />
     <Compile Include="DataTurno.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

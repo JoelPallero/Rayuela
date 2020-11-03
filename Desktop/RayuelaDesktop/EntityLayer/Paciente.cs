@@ -1,17 +1,15 @@
 ﻿namespace EntityLayer
 {
-    public class Paciente : Persona
+    public class Paciente
     {
-        private string obraSocial;
-        private string nroAfiliado;
-        private string certificadoDiscapacidad;
-        private string nroCarnetDiscapacidad;
-        private string terapia;
-
-        public string ObraSocial { get => obraSocial; set => obraSocial = value; }
-        public string NroAfiliado { get => nroAfiliado; set => nroAfiliado = value; }
-        public string CertificadoDiscapacidad { get => certificadoDiscapacidad; set => certificadoDiscapacidad = value; }
-        public string NroCarnetDiscapacidad { get => nroCarnetDiscapacidad; set => nroCarnetDiscapacidad = value; }
-        public string Terapia { get => terapia; set => terapia = value; }
+        public int Id { get; set; }
+        public string Nombre { get; set; }
+        public string Apellido { get; set; }
+        public string ObraSocial { get; set; }
+        public string Terapia { get; set; }
+        public int Dni { get; set; }
+        public string CertificadoDiscapacidad { get; set; }
+        public int NroAfiliado { get; set; }
+        public int IdTerapeuta { get; set; }
     }
 }

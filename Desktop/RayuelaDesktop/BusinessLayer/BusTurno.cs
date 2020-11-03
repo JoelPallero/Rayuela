@@ -17,11 +17,9 @@ namespace BusinessLayer
             return _dataTurno.CargarTurno(turno);
         }
 
-        public DataTable TraerHorariosDesocupados(string Fecha)
+        public DataTable TraerHorariosDesocupados()
         {
-            return _dataTurno.TraerHorariosDesocupados(Fecha);
+            return _dataTurno.TraerHorariosDesocupados();
         }
-
-
     }
 }

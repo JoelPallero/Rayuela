@@ -11,19 +11,17 @@ namespace DataLayer
         {
             int resultado = -1;
 
-            string query = @"Insert into Terapeutas (NombreApellido, TipoDocumento, NroDocumento, Terapia)
-                            values (@NombreApellido, @TipoDocumento, @NroDocumento, @Terapia)"
+            string query = @"Insert into Terapeutas (NombreApellido, Contraseña, Terapia)
+                            values (@NombreApellido, @Contraseña, @Terapia)"
             ;
             SqlCommand cmd = new SqlCommand(query, conexion);
 
             SqlParameter nombreApellido = new SqlParameter("@NombreApellido", _terapeuta.NombreApellido);
-            SqlParameter tipoDocumento = new SqlParameter("@TipoDocumento", _terapeuta.TipoDocumento);
-            SqlParameter nroDocumento = new SqlParameter("@NroDocumento", _terapeuta.NroDocumento);
+            SqlParameter contraseña = new SqlParameter("@Contraseña", _terapeuta.Contraseña);
             SqlParameter terapia = new SqlParameter("@Terapia", _terapeuta.Terapia);
 
             cmd.Parameters.Add(nombreApellido);
-            cmd.Parameters.Add(tipoDocumento);
-            cmd.Parameters.Add(nroDocumento);
+            cmd.Parameters.Add(contraseña);
             cmd.Parameters.Add(terapia);
 
             try

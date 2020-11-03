@@ -21,9 +21,9 @@ namespace BusinessLayer
             return _dataPaciente.ConsutlarIdPaciente(_paciente);
         }
 
-        public Paciente BuscarPaciente(string dni, Paciente _paciente)
+        public Paciente BuscarPaciente(string dni)
         {
-            return _dataPaciente.BuscarPaciente(dni, _paciente);
+            return _dataPaciente.BuscarPaciente(dni);
         }
 
     }

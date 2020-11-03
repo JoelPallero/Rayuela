@@ -44,6 +44,7 @@
     <Compile Include="BusHorarios.cs" />
     <Compile Include="BusPaciente.cs" />
     <Compile Include="BusTerapeuta.cs" />
+    <Compile Include="BusTipoMovimiento.cs" />
     <Compile Include="BusTurno.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

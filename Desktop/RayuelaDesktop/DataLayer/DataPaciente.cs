@@ -99,13 +99,11 @@ namespace DataLayer
             return _paciente;
         }
 
-        public Paciente BuscarPaciente(string dni)
+        public Paciente BuscarPaciente(Paciente _paciente)
         {
-            Paciente _paciente = new Paciente();
-
             string query = @"select *
                         from Pacientes
-                        where DNI = '" + dni + "';"
+                        where DNI = '" + _paciente.Dni + "';"
             ;
 
             SqlCommand cmd = new SqlCommand(query, conexion);

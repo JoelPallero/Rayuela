@@ -43,9 +43,20 @@ namespace Rayuela
 
         #region Metodos generales
 
-        private void ClearPage()
+        private void ClearTerapeuta()
         {
             foreach (Control text in AltaTerpeuta.Controls)
+            {
+                if (text is TextBox)
+                {
+                    text.Text = string.Empty;
+                }
+            }
+        }
+
+        private void ClearPaciente()
+        {
+            foreach (Control text in GroupPaciente.Controls)
             {
                 if (text is TextBox)
                 {
@@ -110,8 +121,11 @@ namespace Rayuela
 
         public void ConsultarIdPaciente()
         {
-            _paciente = _busPaciente.ConsutlarIdPaciente(_paciente);
-            IdPaciente = _paciente.Id;
+            if (PacienteEncontrado == false)
+            {
+                _paciente = _busPaciente.ConsutlarIdPaciente(_paciente);
+                IdPaciente = _paciente.Id;
+            }
         }
 
         private void CargarTerapeuta()
@@ -123,9 +137,11 @@ namespace Rayuela
 
         private void CargarPaciente()
         {
-            _busPaciente.BuscarPaciente(TxtNroDocumentoPaciente.Text);
+            _paciente.Dni = Convert.ToInt32(TxtNroDocumentoPaciente.Text);
+            _busPaciente.BuscarPaciente(_paciente);
             if (_paciente.Dni != 0)
             {
+                IdPaciente = _paciente.Id;
                 TxtApellidoPaciente.Text = _paciente.Apellido.ToString();
                 TxtNombrePaciente.Text = _paciente.Nombre.ToString();
                 TxtNroDocumentoPaciente.Text = _paciente.Dni.ToString();
@@ -163,17 +179,8 @@ namespace Rayuela
             SavePaciente();
             ConsultarIdPaciente();
             GuardarTurno();
-
-            string _notifacion = "Tenés un nuevo paciente, el día: " + Fecha + ", a la hora: " +
-                                 Hora + ":" + Minutos + ".";
-
-            Notificacion("Se ha agendado un nuevo turno", _notifacion);
-            ClearPage();
-
-            //CheckEmptyTextBox();
-            //if (EmptyFields != false)
-            //{                
-            //}
+            Notificacion();
+            ClearTerapeuta();
         }
 
         private void TxtNroDocumento_KeyPress(object sender, KeyPressEventArgs e)
@@ -191,7 +198,7 @@ namespace Rayuela
         private void BtnCargarTerapeuta_Click(object sender, EventArgs e)
         {
             SaveTerapeuta();
-            ClearPage();
+            ClearTerapeuta();
         }       
 
         private void TxtNroDocumentoTerapeuta_KeyPress(object sender, KeyPressEventArgs e)
@@ -240,12 +247,16 @@ namespace Rayuela
             }
         }
 
-        private void Notificacion(string Titulo, string Body)
+        private void Notificacion()
         {
-            //NotifyIcon _notifyIcon = new NotifyIcon();
-            //_notifyIcon.Visible = true;
-            //_notifyIcon.ShowBalloonTip(6000);
+            ConfirmacionDeTurno.Text = "Rayuela";
+            ConfirmacionDeTurno.BalloonTipTitle = "Nuevo Turno Registrado";
+            ConfirmacionDeTurno.BalloonTipText = "Se registro el turno para el paciente " +
+                                    TxtApellidoPaciente.Text + " " + TxtNombrePaciente.Text +
+                                    ", para el día: " + Convert.ToString(Fecha) + ", a la Hora: " + Hora + ":" + Minutos + ".";
+            ConfirmacionDeTurno.BalloonTipIcon = ToolTipIcon.Info;
+            ConfirmacionDeTurno.Visible = true;
+            ConfirmacionDeTurno.ShowBalloonTip(6000);
         }
-
     }
 }

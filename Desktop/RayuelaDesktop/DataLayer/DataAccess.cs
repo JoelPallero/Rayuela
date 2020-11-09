@@ -17,7 +17,6 @@ namespace DataLayer
             conexion = new SqlConnection(CadenaDeConexion);
         }
 
-
         #region Apertura y cierre de conexioón
         public void Abrirconexion()
         {

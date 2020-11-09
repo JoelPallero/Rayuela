@@ -29,9 +29,20 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormInicial));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.TabAgenda = new System.Windows.Forms.TabPage();
-            this.GpPaciente = new System.Windows.Forms.GroupBox();
+            this.TabABM = new System.Windows.Forms.TabPage();
+            this.AsignaciónDeDias = new System.Windows.Forms.GroupBox();
+            this.AltaTerpeuta = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.TxtTerapiaTerapeuta = new System.Windows.Forms.TextBox();
+            this.TxtNomreTerapeuta = new System.Windows.Forms.TextBox();
+            this.TxtClaveTerapeuta = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.BtnCargarTerapeuta = new System.Windows.Forms.Button();
+            this.ConfirmacionDeTurno = new System.Windows.Forms.NotifyIcon(this.components);
             this.GroupPaciente = new System.Windows.Forms.GroupBox();
             this.TxtNombrePaciente = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -56,24 +67,12 @@
             this.LblHorarios = new System.Windows.Forms.Label();
             this.BtnSchedule = new System.Windows.Forms.Button();
             this.CmbHora = new System.Windows.Forms.ComboBox();
-            this.TabABM = new System.Windows.Forms.TabPage();
-            this.AsignaciónDeDias = new System.Windows.Forms.GroupBox();
-            this.AltaTerpeuta = new System.Windows.Forms.GroupBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.TxtTerapiaTerapeuta = new System.Windows.Forms.TextBox();
-            this.TxtNomreTerapeuta = new System.Windows.Forms.TextBox();
-            this.TxtClaveTerapeuta = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.BtnCargarTerapeuta = new System.Windows.Forms.Button();
-            this.NotiConfirmacion = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabControl1.SuspendLayout();
             this.TabAgenda.SuspendLayout();
-            this.GpPaciente.SuspendLayout();
-            this.GroupPaciente.SuspendLayout();
-            this.GroupAgenda.SuspendLayout();
             this.TabABM.SuspendLayout();
             this.AltaTerpeuta.SuspendLayout();
+            this.GroupPaciente.SuspendLayout();
+            this.GroupAgenda.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -89,7 +88,8 @@
             // 
             // TabAgenda
             // 
-            this.TabAgenda.Controls.Add(this.GpPaciente);
+            this.TabAgenda.Controls.Add(this.GroupPaciente);
+            this.TabAgenda.Controls.Add(this.GroupAgenda);
             this.TabAgenda.Location = new System.Drawing.Point(4, 22);
             this.TabAgenda.Name = "TabAgenda";
             this.TabAgenda.Padding = new System.Windows.Forms.Padding(3);
@@ -98,18 +98,106 @@
             this.TabAgenda.Text = "Agenda";
             this.TabAgenda.UseVisualStyleBackColor = true;
             // 
-            // GpPaciente
+            // TabABM
             // 
-            this.GpPaciente.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.GpPaciente.Controls.Add(this.GroupPaciente);
-            this.GpPaciente.Controls.Add(this.GroupAgenda);
-            this.GpPaciente.Location = new System.Drawing.Point(10, 13);
-            this.GpPaciente.Name = "GpPaciente";
-            this.GpPaciente.Size = new System.Drawing.Size(484, 371);
-            this.GpPaciente.TabIndex = 23;
-            this.GpPaciente.TabStop = false;
-            this.GpPaciente.Text = "Datos del Paciente";
+            this.TabABM.Controls.Add(this.AsignaciónDeDias);
+            this.TabABM.Controls.Add(this.AltaTerpeuta);
+            this.TabABM.Location = new System.Drawing.Point(4, 22);
+            this.TabABM.Name = "TabABM";
+            this.TabABM.Padding = new System.Windows.Forms.Padding(3);
+            this.TabABM.Size = new System.Drawing.Size(500, 397);
+            this.TabABM.TabIndex = 1;
+            this.TabABM.Text = "ABM Terapeuta";
+            this.TabABM.UseVisualStyleBackColor = true;
+            // 
+            // AsignaciónDeDias
+            // 
+            this.AsignaciónDeDias.Location = new System.Drawing.Point(8, 181);
+            this.AsignaciónDeDias.Name = "AsignaciónDeDias";
+            this.AsignaciónDeDias.Size = new System.Drawing.Size(485, 211);
+            this.AsignaciónDeDias.TabIndex = 1;
+            this.AsignaciónDeDias.TabStop = false;
+            this.AsignaciónDeDias.Text = "Asignación de días";
+            // 
+            // AltaTerpeuta
+            // 
+            this.AltaTerpeuta.Controls.Add(this.label15);
+            this.AltaTerpeuta.Controls.Add(this.TxtTerapiaTerapeuta);
+            this.AltaTerpeuta.Controls.Add(this.TxtNomreTerapeuta);
+            this.AltaTerpeuta.Controls.Add(this.TxtClaveTerapeuta);
+            this.AltaTerpeuta.Controls.Add(this.label11);
+            this.AltaTerpeuta.Controls.Add(this.label13);
+            this.AltaTerpeuta.Controls.Add(this.BtnCargarTerapeuta);
+            this.AltaTerpeuta.Location = new System.Drawing.Point(8, 16);
+            this.AltaTerpeuta.Name = "AltaTerpeuta";
+            this.AltaTerpeuta.Size = new System.Drawing.Size(485, 159);
+            this.AltaTerpeuta.TabIndex = 0;
+            this.AltaTerpeuta.TabStop = false;
+            this.AltaTerpeuta.Text = "Alta de Terapeuta";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(33, 83);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(46, 13);
+            this.label15.TabIndex = 24;
+            this.label15.Text = "Terapia:";
+            // 
+            // TxtTerapiaTerapeuta
+            // 
+            this.TxtTerapiaTerapeuta.Location = new System.Drawing.Point(143, 80);
+            this.TxtTerapiaTerapeuta.Name = "TxtTerapiaTerapeuta";
+            this.TxtTerapiaTerapeuta.Size = new System.Drawing.Size(279, 20);
+            this.TxtTerapiaTerapeuta.TabIndex = 2;
+            // 
+            // TxtNomreTerapeuta
+            // 
+            this.TxtNomreTerapeuta.Location = new System.Drawing.Point(143, 28);
+            this.TxtNomreTerapeuta.Name = "TxtNomreTerapeuta";
+            this.TxtNomreTerapeuta.Size = new System.Drawing.Size(279, 20);
+            this.TxtNomreTerapeuta.TabIndex = 0;
+            // 
+            // TxtClaveTerapeuta
+            // 
+            this.TxtClaveTerapeuta.Location = new System.Drawing.Point(143, 54);
+            this.TxtClaveTerapeuta.Name = "TxtClaveTerapeuta";
+            this.TxtClaveTerapeuta.Size = new System.Drawing.Size(279, 20);
+            this.TxtClaveTerapeuta.TabIndex = 1;
+            this.TxtClaveTerapeuta.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtNroDocumentoTerapeuta_KeyPress);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(34, 31);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(95, 13);
+            this.label11.TabIndex = 18;
+            this.label11.Text = "Nombre y Apellido:";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(34, 57);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(64, 13);
+            this.label13.TabIndex = 20;
+            this.label13.Text = "Contraseña:";
+            // 
+            // BtnCargarTerapeuta
+            // 
+            this.BtnCargarTerapeuta.Location = new System.Drawing.Point(326, 111);
+            this.BtnCargarTerapeuta.Name = "BtnCargarTerapeuta";
+            this.BtnCargarTerapeuta.Size = new System.Drawing.Size(96, 36);
+            this.BtnCargarTerapeuta.TabIndex = 3;
+            this.BtnCargarTerapeuta.Text = "Cargar";
+            this.BtnCargarTerapeuta.UseVisualStyleBackColor = true;
+            this.BtnCargarTerapeuta.Click += new System.EventHandler(this.BtnCargarTerapeuta_Click);
+            // 
+            // ConfirmacionDeTurno
+            // 
+            this.ConfirmacionDeTurno.Icon = ((System.Drawing.Icon)(resources.GetObject("ConfirmacionDeTurno.Icon")));
+            this.ConfirmacionDeTurno.Visible = true;
             // 
             // GroupPaciente
             // 
@@ -127,10 +215,10 @@
             this.GroupPaciente.Controls.Add(this.label6);
             this.GroupPaciente.Controls.Add(this.label5);
             this.GroupPaciente.Controls.Add(this.label3);
-            this.GroupPaciente.Location = new System.Drawing.Point(19, 19);
+            this.GroupPaciente.Location = new System.Drawing.Point(30, 17);
             this.GroupPaciente.Name = "GroupPaciente";
             this.GroupPaciente.Size = new System.Drawing.Size(441, 201);
-            this.GroupPaciente.TabIndex = 25;
+            this.GroupPaciente.TabIndex = 27;
             this.GroupPaciente.TabStop = false;
             this.GroupPaciente.Text = "Datos del Paciente";
             // 
@@ -257,10 +345,10 @@
             this.GroupAgenda.Controls.Add(this.LblHorarios);
             this.GroupAgenda.Controls.Add(this.BtnSchedule);
             this.GroupAgenda.Controls.Add(this.CmbHora);
-            this.GroupAgenda.Location = new System.Drawing.Point(19, 226);
+            this.GroupAgenda.Location = new System.Drawing.Point(30, 239);
             this.GroupAgenda.Name = "GroupAgenda";
             this.GroupAgenda.Size = new System.Drawing.Size(441, 139);
-            this.GroupAgenda.TabIndex = 24;
+            this.GroupAgenda.TabIndex = 26;
             this.GroupAgenda.TabStop = false;
             this.GroupAgenda.Text = "Agenda de Turnos";
             // 
@@ -356,107 +444,6 @@
             this.CmbHora.Size = new System.Drawing.Size(51, 21);
             this.CmbHora.TabIndex = 9;
             // 
-            // TabABM
-            // 
-            this.TabABM.Controls.Add(this.AsignaciónDeDias);
-            this.TabABM.Controls.Add(this.AltaTerpeuta);
-            this.TabABM.Location = new System.Drawing.Point(4, 22);
-            this.TabABM.Name = "TabABM";
-            this.TabABM.Padding = new System.Windows.Forms.Padding(3);
-            this.TabABM.Size = new System.Drawing.Size(500, 397);
-            this.TabABM.TabIndex = 1;
-            this.TabABM.Text = "ABM Terapeuta";
-            this.TabABM.UseVisualStyleBackColor = true;
-            // 
-            // AsignaciónDeDias
-            // 
-            this.AsignaciónDeDias.Location = new System.Drawing.Point(8, 181);
-            this.AsignaciónDeDias.Name = "AsignaciónDeDias";
-            this.AsignaciónDeDias.Size = new System.Drawing.Size(485, 211);
-            this.AsignaciónDeDias.TabIndex = 1;
-            this.AsignaciónDeDias.TabStop = false;
-            this.AsignaciónDeDias.Text = "Asignación de días";
-            // 
-            // AltaTerpeuta
-            // 
-            this.AltaTerpeuta.Controls.Add(this.label15);
-            this.AltaTerpeuta.Controls.Add(this.TxtTerapiaTerapeuta);
-            this.AltaTerpeuta.Controls.Add(this.TxtNomreTerapeuta);
-            this.AltaTerpeuta.Controls.Add(this.TxtClaveTerapeuta);
-            this.AltaTerpeuta.Controls.Add(this.label11);
-            this.AltaTerpeuta.Controls.Add(this.label13);
-            this.AltaTerpeuta.Controls.Add(this.BtnCargarTerapeuta);
-            this.AltaTerpeuta.Location = new System.Drawing.Point(8, 16);
-            this.AltaTerpeuta.Name = "AltaTerpeuta";
-            this.AltaTerpeuta.Size = new System.Drawing.Size(485, 159);
-            this.AltaTerpeuta.TabIndex = 0;
-            this.AltaTerpeuta.TabStop = false;
-            this.AltaTerpeuta.Text = "Alta de Terapeuta";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(33, 83);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(46, 13);
-            this.label15.TabIndex = 24;
-            this.label15.Text = "Terapia:";
-            // 
-            // TxtTerapiaTerapeuta
-            // 
-            this.TxtTerapiaTerapeuta.Location = new System.Drawing.Point(143, 80);
-            this.TxtTerapiaTerapeuta.Name = "TxtTerapiaTerapeuta";
-            this.TxtTerapiaTerapeuta.Size = new System.Drawing.Size(279, 20);
-            this.TxtTerapiaTerapeuta.TabIndex = 2;
-            // 
-            // TxtNomreTerapeuta
-            // 
-            this.TxtNomreTerapeuta.Location = new System.Drawing.Point(143, 28);
-            this.TxtNomreTerapeuta.Name = "TxtNomreTerapeuta";
-            this.TxtNomreTerapeuta.Size = new System.Drawing.Size(279, 20);
-            this.TxtNomreTerapeuta.TabIndex = 0;
-            // 
-            // TxtClaveTerapeuta
-            // 
-            this.TxtClaveTerapeuta.Location = new System.Drawing.Point(143, 54);
-            this.TxtClaveTerapeuta.Name = "TxtClaveTerapeuta";
-            this.TxtClaveTerapeuta.Size = new System.Drawing.Size(279, 20);
-            this.TxtClaveTerapeuta.TabIndex = 1;
-            this.TxtClaveTerapeuta.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtNroDocumentoTerapeuta_KeyPress);
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(34, 31);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(95, 13);
-            this.label11.TabIndex = 18;
-            this.label11.Text = "Nombre y Apellido:";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(34, 57);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(64, 13);
-            this.label13.TabIndex = 20;
-            this.label13.Text = "Contraseña:";
-            // 
-            // BtnCargarTerapeuta
-            // 
-            this.BtnCargarTerapeuta.Location = new System.Drawing.Point(326, 111);
-            this.BtnCargarTerapeuta.Name = "BtnCargarTerapeuta";
-            this.BtnCargarTerapeuta.Size = new System.Drawing.Size(96, 36);
-            this.BtnCargarTerapeuta.TabIndex = 3;
-            this.BtnCargarTerapeuta.Text = "Cargar";
-            this.BtnCargarTerapeuta.UseVisualStyleBackColor = true;
-            this.BtnCargarTerapeuta.Click += new System.EventHandler(this.BtnCargarTerapeuta_Click);
-            // 
-            // NotiConfirmacion
-            // 
-            this.NotiConfirmacion.Text = "Confirmarcion de Turno agendado";
-            this.NotiConfirmacion.Visible = true;
-            // 
             // FormInicial
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -470,14 +457,13 @@
             this.Text = "Administración de Turnos";
             this.tabControl1.ResumeLayout(false);
             this.TabAgenda.ResumeLayout(false);
-            this.GpPaciente.ResumeLayout(false);
+            this.TabABM.ResumeLayout(false);
+            this.AltaTerpeuta.ResumeLayout(false);
+            this.AltaTerpeuta.PerformLayout();
             this.GroupPaciente.ResumeLayout(false);
             this.GroupPaciente.PerformLayout();
             this.GroupAgenda.ResumeLayout(false);
             this.GroupAgenda.PerformLayout();
-            this.TabABM.ResumeLayout(false);
-            this.AltaTerpeuta.ResumeLayout(false);
-            this.AltaTerpeuta.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -487,7 +473,6 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage TabAgenda;
         private System.Windows.Forms.TabPage TabABM;
-        private System.Windows.Forms.GroupBox GpPaciente;
         private System.Windows.Forms.GroupBox AsignaciónDeDias;
         private System.Windows.Forms.GroupBox AltaTerpeuta;
         private System.Windows.Forms.Button BtnCargarTerapeuta;
@@ -497,7 +482,10 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox TxtTerapiaTerapeuta;
+        private System.Windows.Forms.NotifyIcon ConfirmacionDeTurno;
         private System.Windows.Forms.GroupBox GroupPaciente;
+        private System.Windows.Forms.TextBox TxtNombrePaciente;
+        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox TxtCertificadoDiscapacidad;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox TxtApellidoPaciente;
@@ -519,8 +507,5 @@
         private System.Windows.Forms.Label LblHorarios;
         private System.Windows.Forms.Button BtnSchedule;
         private System.Windows.Forms.ComboBox CmbHora;
-        private System.Windows.Forms.TextBox TxtNombrePaciente;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NotifyIcon NotiConfirmacion;
     }
 }

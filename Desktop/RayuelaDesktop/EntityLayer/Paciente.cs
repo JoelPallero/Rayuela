@@ -10,6 +10,5 @@
         public int Dni { get; set; }
         public string CertificadoDiscapacidad { get; set; }
         public int NroAfiliado { get; set; }
-        public int IdTerapeuta { get; set; }
     }
 }

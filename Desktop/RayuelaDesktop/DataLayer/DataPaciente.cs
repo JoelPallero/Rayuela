@@ -15,16 +15,14 @@ namespace DataLayer
                                                     Terapia,
                                                     DNI,
                                                     CertificadoDiscapacidad,
-                                                    NroAfiliado,
-                                                    IdTerapeuta) 
+                                                    NroAfiliado) 
                                              values(@Nombre,
                                                     @Apellido,
                                                     @ObraSocial,
                                                     @Terapia,
                                                     @DNI,
                                                     @CertificadoDiscapacidad,
-                                                    @NroAfiliado,
-                                                    @IdTerapeuta)"
+                                                    @NroAfiliado)"
             ;
 
             SqlParameter nombre = new SqlParameter("@Nombre", _paciente.Nombre);
@@ -34,7 +32,6 @@ namespace DataLayer
             SqlParameter dNI = new SqlParameter("@DNI", _paciente.Dni);
             SqlParameter certificadoDiscapacidad = new SqlParameter("@CertificadoDiscapacidad", _paciente.CertificadoDiscapacidad);
             SqlParameter nroAfiliado = new SqlParameter("@NroAfiliado", _paciente.NroAfiliado);
-            SqlParameter idTerapeuta = new SqlParameter("@IdTerapeuta", _paciente.IdTerapeuta);
 
             SqlCommand cmd = new SqlCommand(query, conexion);
 
@@ -45,7 +42,6 @@ namespace DataLayer
             cmd.Parameters.Add(dNI);
             cmd.Parameters.Add(certificadoDiscapacidad);
             cmd.Parameters.Add(nroAfiliado);
-            cmd.Parameters.Add(idTerapeuta);
 
             try
             {
@@ -122,7 +118,6 @@ namespace DataLayer
                     _paciente.Dni = int.Parse(reader["DNI"].ToString());
                     _paciente.CertificadoDiscapacidad = reader["CertificadoDiscapacidad"].ToString();
                     _paciente.NroAfiliado = int.Parse(reader["NroAfiliado"].ToString());
-
                 }
                 else
                 {

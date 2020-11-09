@@ -103,7 +103,6 @@ namespace Rayuela
                 _paciente.Dni = Convert.ToInt32(TxtNroDocumentoPaciente.Text);
                 _paciente.CertificadoDiscapacidad = TxtCertificadoDiscapacidad.Text;
                 _paciente.NroAfiliado = Convert.ToInt32(TxtNroAfiliado.Text);
-                _paciente.IdTerapeuta = Convert.ToInt32(CmbTerapeuta.SelectedIndex + 1);
 
                 _busPaciente.SavePaciente(_paciente);
             }
